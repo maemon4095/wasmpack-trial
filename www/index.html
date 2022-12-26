@@ -9,9 +9,22 @@
 </body>
 
 <script type="module">
-    import init, { add2 } from "./assets/wasmpack_trial.js";
-    await init();
-    console.log(add2(1, 3));
+    import init from "./assets/wasmpack_trial.js";
+
+    const exports = await init();
+    const memory = exports.memory;
+    console.log(memory);
+    const buffer = exports.memory.buffer;
+    console.log(buffer);
+    const offset = exports.array();
+    const array = new Uint8Array(buffer, offset);
+    console.log(buffer.length);
+    console.log(array.length);
+    console.log(dumphex(array));
+
+    function dumphex(array) {
+        return [...array].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
 </script>
 
 </html>
